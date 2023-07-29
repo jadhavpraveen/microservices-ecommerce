@@ -23,7 +23,7 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public void placeOrder(OrderRequest orderRequest) {
@@ -36,8 +36,8 @@ public class OrderServiceImpl implements OrderService{
 
        List<String> skuCodes =  order.getOrderLineItemsList().stream().map(orderLineItem -> orderLineItem.getSkuCode() ).toList();
         //call inventory service and place order if product is in inventory stock
-        InventoryResponse[] inventoryResponses = webClient.get()
-                                  .uri("http://localhost:8082/api/inventory",
+        InventoryResponse[] inventoryResponses = webClientBuilder.build().get()
+                                  .uri("http://inventory-service/api/inventory/inventories",
                                           uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                                   .retrieve()
                                   .bodyToMono(InventoryResponse[].class)

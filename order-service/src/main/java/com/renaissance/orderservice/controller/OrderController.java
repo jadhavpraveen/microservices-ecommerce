@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequestMapping("/api/order")
 public class OrderController {
     private final OrderServiceImpl orderService;
-    @PostMapping
+    @PostMapping("orders")
     public ResponseEntity<OrderRequest> placeOrder(@RequestBody OrderRequest orderRequest)    {
         orderService.placeOrder(orderRequest);
         return new ResponseEntity<>(orderRequest, HttpStatus.CREATED);
